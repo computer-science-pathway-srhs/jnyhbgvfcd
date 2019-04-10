@@ -1,0 +1,52 @@
+void remove(Type key){
+        Node prevNode = null;
+        if(!root.key.equals(key)){
+            prevNode = findPrev(key, root);
+        }
+        if(prevNode != null){
+            if(prevNode.left != null && prevNode.left.key.equals(key)){
+                if(prevNode.left.left == null && prevNode.left.right == null){
+                    prevNode.left = null;
+                }else if(prevNode.left.left == null && prevNode.left.right != null){
+                    prevNode.left = prevNode.left.right;
+                }else if(prevNode.left.left != null && prevNode.left.right == null){
+                    prevNode.left = prevNode.left.left;
+                }else{
+                    Node succ = minNode(prevNode.left.right);
+                    remove(succ.key);
+                    prevNode.left.key = succ.key;
+                }
+            }
+            if(prevNode.right != null && prevNode.right.key.equals(key)){
+                if(prevNode.right.left == null && prevNode.right.right == null){
+                    prevNode.right = null;
+                }else if(prevNode.right.left == null && prevNode.right.right != null){
+                    prevNode.right = prevNode.right.right;
+                }else if(prevNode.right.left != null && prevNode.right.right == null){
+                    prevNode.right = prevNode.right.left;
+                }else{
+                    Node succ = minNode(prevNode.right.right);
+                    remove(succ.key);
+                    prevNode.right.key = succ.key;
+                }
+            }
+        }else{
+            Node succ = minNode(root.right);
+            remove(succ.key);
+            root.key = succ.key;
+        }
+    }
+    
+    Node findPrev(Type key, Node n){
+        if(root == null){
+            return null;
+        }else if((n.left != null && n.left.key.equals(key)) || (n.right != null && n.right.key.equals(key))){
+            return n;
+        }else if(key.compareTo(n.key) < 0){
+            return findPrev(key, n.left);
+        }else if(key.compareTo(n.key) > 0){
+            return findPrev(key, n.right);
+        }else{
+            return n;
+        }
+    }
